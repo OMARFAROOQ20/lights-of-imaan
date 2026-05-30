@@ -1,126 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lights of Imaan</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lights of Imaan 🌙</title>
 
-<style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      color: white;
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      transition: 0.5s;
+    }
 
-header{
-    background:#0b5d3b;
-    color:white;
-    text-align:center;
-    padding:40px 20px;
-}
+    .overlay {
+      background: rgba(0,0,0,0.6);
+      min-height: 100vh;
+      padding: 20px;
+    }
 
-header h1{
-    margin:0;
-    font-size:40px;
-}
+    h1 {
+      margin-top: 20px;
+    }
 
-.banner{
-    background:url('https://images.unsplash.com/photo-1564769625905-50e93615e769');
-    background-size:cover;
-    background-position:center;
-    height:250px;
-}
+    .card {
+      background: rgba(255,255,255,0.1);
+      margin: 15px auto;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 500px;
+    }
 
-.container{
-    max-width:1000px;
-    margin:auto;
-    padding:20px;
-}
-
-.card{
-    background:white;
-    padding:20px;
-    margin:15px 0;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.counter-btn{
-    padding:10px 20px;
-    font-size:18px;
-    cursor:pointer;
-}
-
-footer{
-    background:#0b5d3b;
-    color:white;
-    text-align:center;
-    padding:15px;
-    margin-top:20px;
-}
-</style>
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="overlay">
 
-<header>
-    <h1>🕌 Lights of Imaan</h1>
-    <p>Your Daily Islamic Companion</p>
-</header>
+    <h1>🌙 Lights of Imaan</h1>
 
-<div class="banner"></div>
+    <div class="card">
+      <h3>📿 Daily Dua</h3>
+      <p id="dua">Loading...</p>
+    </div>
 
-<div class="container">
+    <div class="card">
+      <h3>📖 Ayah</h3>
+      <p id="ayah">Loading...</p>
+    </div>
 
-<div class="card">
-<h2>📖 Daily Ayah</h2>
-<p>Indeed, Allah is with the patient. (Quran 2:153)</p>
-</div>
+    <div class="card">
+      <h3>🤲 Quote</h3>
+      <p id="quote">Loading...</p>
+    </div>
 
-<div class="card">
-<h2>🤲 Daily Dua</h2>
-<p>Rabbana atina fid-dunya hasanatan wa fil akhirati hasanatan wa qina adhaban nar.</p>
-</div>
+    <button onclick="loadData()">Refresh</button>
 
-<div class="card">
-<h2>💎 Islamic Quote</h2>
-<p>"The best among you are those who learn the Quran and teach it."</p>
-</div>
-
-<div class="card">
-<h2>🕌 Prayer Times</h2>
-<p>Prayer Times will be connected in the next step.</p>
-</div>
-
-<div class="card">
-<h2>📿 Tasbih Counter</h2>
-<h1 id="count">0</h1>
-<button class="counter-btn" onclick="increase()">Tasbih +1</button>
-</div>
-
-<div class="card">
-<h2>🧭 Qibla Direction</h2>
-<p>Qibla feature coming soon.</p>
-</div>
-
-<div class="card">
-<h2>👤 Login & Sign Up</h2>
-<p>User accounts will be added later.</p>
-</div>
-
-</div>
-
-<footer>
-© 2026 Lights of Imaan
-</footer>
+  </div>
 
 <script>
-let count = 0;
+async function loadData() {
+  try {
+    const res = await fetch("/content");
+    const data = await res.json();
 
-function increase(){
-    count++;
-    document.getElementById("count").innerText = count;
+    document.getElementById("dua").innerText = data.dua;
+    document.getElementById("ayah").innerText = data.ayah;
+    document.getElementById("quote").innerText = data.quote;
+
+    document.body.style.backgroundImage = `url('${data.wallpaper}')`;
+
+  } catch (err) {
+    alert("Error loading content");
+  }
 }
+
+// auto load on start
+loadData();
 </script>
 
 </body>
