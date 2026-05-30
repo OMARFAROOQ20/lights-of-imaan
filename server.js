@@ -1,28 +1,49 @@
 const express = require("express");
-const path = require("path");
+const router = express.Router();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// 🌙 Islamic Data (you can expand later)
+const duas = [
+  "O Allah, guide us to the straight path.",
+  "O Allah, forgive our sins.",
+  "O Allah, grant us peace in heart.",
+  "O Allah, increase us in knowledge."
+];
 
-// 🌙 Static files (frontend)
-app.use(express.static("public"));
+const ayahs = [
+  "Indeed, with hardship comes ease. (94:6)",
+  "So remember Me; I will remember you. (2:152)",
+  "Do not lose hope in the mercy of Allah. (39:53)",
+  "Verily, Allah is with the patient. (2:153)"
+];
 
-// 📿 Routes
-const prayerRoute = require("./routes/prayer");
-const quranRoute = require("./routes/quran");
-const contentRoute = require("./routes/content");
+const quotes = [
+  "Prayer is the key to peace.",
+  "A believer is never alone.",
+  "Faith makes everything possible.",
+  "Trust Allah’s timing."
+];
 
-// API endpoints
-app.use("/prayer", prayerRoute);
-app.use("/quran", quranRoute);
-app.use("/content", contentRoute);
+const wallpapers = [
+  "https://images.unsplash.com/photo-1542816417-0983c9c9ad53",
+  "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+  "https://images.unsplash.com/photo-1548013146-72479768bada",
+  "https://images.unsplash.com/photo-1519817914152-22d216bb9170"
+];
 
-// 🌐 Home page
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// 🔥 Daily rotating logic
+function getTodayIndex(arrLength) {
+  const today = new Date().getDate(); // day of month
+  return today % arrLength;
+}
+
+// 📿 API route
+router.get("/", (req, res) => {
+  res.json({
+    dua: duas[getTodayIndex(duas.length)],
+    ayah: ayahs[getTodayIndex(ayahs.length)],
+    quote: quotes[getTodayIndex(quotes.length)],
+    wallpaper: wallpapers[getTodayIndex(wallpapers.length)]
+  });
 });
 
-// 🚀 Start server
-app.listen(PORT, () => {
-  console.log("🌙 Lights of Imaan server running on port " + PORT);
-});
+module.exports = router;
